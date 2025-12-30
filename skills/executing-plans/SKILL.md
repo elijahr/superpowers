@@ -13,12 +13,51 @@ Load plan, review critically, execute tasks in batches, report for review betwee
 
 **Announce at start:** "I'm using the executing-plans skill to implement this plan."
 
+---
+
+## Autonomous Mode Behavior
+
+Check your context for autonomous mode indicators:
+- "Mode: AUTONOMOUS" or "autonomous mode"
+- Explicit instruction to proceed without asking
+
+When autonomous mode is active:
+
+### Skip These Interactions
+- Concerns about plan (proceed if minor, log concerns for later)
+- "Ready for feedback" checkpoint (continue to next batch)
+
+### Make These Decisions Autonomously
+- Minor plan concerns: Log and proceed
+- Batch size: Use default (3 tasks)
+
+### Circuit Breakers (Still Pause For)
+- Critical plan gaps that prevent execution
+- Repeated test failures (3+ consecutive)
+- Security-sensitive operations not clearly specified
+
+---
+
 ## The Process
 
 ### Step 1: Load and Review Plan
 1. Read plan file
 2. Review critically - identify any questions or concerns about the plan
-3. If concerns: Raise them with your human partner before starting
+3. If concerns: Use AskUserQuestion to raise them:
+   ```javascript
+   AskUserQuestion({
+     questions: [{
+       question: "Found [N] concerns with the plan. How should we proceed?",
+       header: "Plan Review",
+       options: [
+         { label: "Discuss concerns", description: "Review each concern before starting" },
+         { label: "Proceed anyway (Recommended if minor)", description: "Start execution, address issues as they arise" },
+         { label: "Update plan first", description: "Revise the plan to address concerns" }
+       ],
+       multiSelect: false
+     }]
+   })
+   ```
 4. If no concerns: Create TodoWrite and proceed
 
 ### Step 2: Execute Batch

@@ -13,6 +13,32 @@ Git worktrees create isolated workspaces sharing the same repository, allowing w
 
 **Announce at start:** "I'm using the using-git-worktrees skill to set up an isolated workspace."
 
+---
+
+## Autonomous Mode Behavior
+
+Check your context for autonomous mode indicators:
+- "Mode: AUTONOMOUS" or "autonomous mode"
+- `worktree` preference specified (e.g., "single", "per_parallel_track", "none")
+
+When autonomous mode is active:
+
+### Skip These Interactions
+- "Where should I create worktrees?" - use default (.worktrees/) or CLAUDE.md preference
+- "Tests fail during baseline - ask whether to proceed" - proceed if minor, pause if critical
+
+### Make These Decisions Autonomously
+- Directory location: Use .worktrees/ as default if no existing directory or CLAUDE.md preference
+- Gitignore fix: Always fix automatically (add to .gitignore + commit)
+- Minor test failures: Log and proceed, major failures pause
+
+### Circuit Breakers (Still Pause For)
+- All tests failing (baseline is completely broken)
+- Git worktree command fails (structural git issue)
+- .gitignore cannot be modified (permissions or other issue)
+
+---
+
 ## Directory Selection Process
 
 Follow this priority order:

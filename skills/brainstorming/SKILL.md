@@ -9,9 +9,61 @@ description: "You MUST use this before any creative work - creating features, bu
 
 Help turn ideas into fully formed designs and specs through natural collaborative dialogue.
 
-Start by understanding the current project context, then ask questions one at a time to refine the idea. Once you understand what you're building, present the design in small sections (200-300 words), checking after each section whether it looks right so far.
+**Two modes of operation:**
+- **Interactive mode** (default): Ask questions, validate incrementally, collaborate with user
+- **Synthesis mode**: Given comprehensive context, produce design without questions
 
-## The Process
+## Mode Detection
+
+<CRITICAL>
+Check your context for synthesis mode indicators BEFORE starting the interactive process.
+</CRITICAL>
+
+**Synthesis mode is active when you see ANY of these in your context:**
+- "SYNTHESIS MODE" or "synthesis mode"
+- "Mode: AUTONOMOUS"
+- "DO NOT ask questions"
+- "Pre-Collected Discovery Context" or "design_context"
+- Comprehensive context with architectural decisions, scope boundaries, success criteria already defined
+
+**When synthesis mode is detected:**
+1. Skip "Understanding the idea" phase entirely
+2. Skip "Exploring approaches" questions
+3. Go directly to "Presenting the design" - write the FULL design
+4. Do NOT ask "does this look right so far" between sections
+5. Do NOT ask "Ready to set up for implementation?"
+6. Produce complete output, then stop
+
+**When synthesis mode is NOT detected:**
+Continue with standard interactive process below.
+
+---
+
+## Autonomous Mode Behavior
+
+When synthesis mode / autonomous mode is active:
+
+### Skip These Interactions
+- Questions about purpose, constraints, success criteria (should be in context)
+- "Which approach would you prefer?" (make the best choice, document rationale)
+- "Does this look right so far?" (proceed through all sections)
+- "Ready to set up for implementation?" (just complete the design doc)
+
+### Make These Decisions Autonomously
+- Architectural approach: Choose best fit based on context, document why
+- Trade-offs: Make the call, document alternatives considered
+- Scope boundaries: Use what's in context, flag any ambiguity
+
+### Circuit Breakers (Still Pause For)
+- Security-critical design decisions with no guidance in context
+- Contradictory requirements that cannot be reconciled
+- Missing context that makes design impossible (not just inconvenient)
+
+Use the Circuit Breaker Format from docs/autonomous-mode-protocol.md if pausing.
+
+---
+
+## The Process (Interactive Mode)
 
 **Understanding the idea:**
 - Check out the current project state first (files, docs, recent commits)
@@ -35,7 +87,9 @@ Start by understanding the current project context, then ask questions one at a 
 ## After the Design
 
 **Documentation:**
-- Write the validated design to `docs/plans/YYYY-MM-DD-<topic>-design.md`
+- Write the validated design to `~/.claude/plans/<project-dir-name>/YYYY-MM-DD-<topic>-design.md`
+- Create the directory if it doesn't exist: `mkdir -p ~/.claude/plans/<project-dir-name>`
+- `<project-dir-name>` is the current working directory's name (e.g., `my-project` for `/Users/foo/Development/my-project`)
 - Use elements-of-style:writing-clearly-and-concisely skill if available
 - Commit the design document to git
 

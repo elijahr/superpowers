@@ -13,6 +13,36 @@ Guide completion of development work by presenting clear options and handling ch
 
 **Announce at start:** "I'm using the finishing-a-development-branch skill to complete this work."
 
+---
+
+## Autonomous Mode Behavior
+
+Check your context for autonomous mode indicators:
+- "Mode: AUTONOMOUS" or "autonomous mode"
+- `post_impl` preference specified (e.g., "auto_pr", "offer_options", "stop")
+
+When autonomous mode is active:
+
+### With post_impl Preference
+
+| Preference | Action |
+|------------|--------|
+| `auto_pr` | Skip Step 3 (present options), go directly to Option 2 (Push and Create PR) |
+| `offer_options` | Present options as normal (this is the interactive fallback) |
+| `stop` | Skip Step 3, just report completion without action |
+
+### Without post_impl Preference
+
+In autonomous mode without explicit preference:
+- Default to Option 2 (Push and Create PR) - safest autonomous choice
+- Document the decision: "Autonomous mode: defaulting to PR creation"
+
+### Circuit Breakers (Still Pause For)
+- Tests failing (always block on this)
+- Option 4 (Discard) - ALWAYS requires explicit confirmation, never auto-execute
+
+---
+
 ## The Process
 
 ### Step 1: Verify Tests

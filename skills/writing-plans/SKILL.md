@@ -15,7 +15,34 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 
 **Context:** This should be run in a dedicated worktree (created by brainstorming skill).
 
-**Save plans to:** `docs/plans/YYYY-MM-DD-<feature-name>.md`
+**Save plans to:** `~/.claude/plans/<project-dir-name>/YYYY-MM-DD-<feature-name>.md`
+- Create the directory if it doesn't exist: `mkdir -p ~/.claude/plans/<project-dir-name>`
+- `<project-dir-name>` is the current working directory's name (e.g., `my-project` for `/Users/foo/Development/my-project`)
+
+---
+
+## Autonomous Mode Behavior
+
+Check your context for autonomous mode indicators:
+- "Mode: AUTONOMOUS" or "autonomous mode"
+- "DO NOT ask questions"
+- Design document path already provided in context
+
+When autonomous mode is active:
+
+### Skip These Interactions
+- "Ask the user for the path to the design document" (should be in context)
+- Execution handoff choice (proceed based on context or skip handoff entirely)
+
+### Make These Decisions Autonomously
+- Design doc path: Use path from context, or find most recent design doc in plans directory
+- Plan structure: Use standard structure, don't ask for preferences
+
+### Circuit Breakers (Still Pause For)
+- No design document exists and no requirements provided (cannot plan without spec)
+- Design document has critical gaps that make planning impossible
+
+---
 
 ## Bite-Sized Task Granularity
 
@@ -25,6 +52,16 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 - "Implement the minimal code to make the test pass" - step
 - "Run the tests and make sure they pass" - step
 - "Commit" - step
+
+## Source Design Document
+
+**In interactive mode:** Ask the user for the path to the design document before writing the plan.
+
+**In autonomous mode:** Use the design document path from context. If not provided, search for the most recent design doc in `~/.claude/plans/<project-dir-name>/`.
+
+Record the path in the header so reviewers and executing agents can reference the original design decisions.
+
+If no design document exists and none can be found, note that explicitly (or trigger circuit breaker if requirements are insufficient).
 
 ## Plan Document Header
 
@@ -36,6 +73,8 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 > **For Claude:** REQUIRED SUB-SKILL: Use executing-plans to implement this plan task-by-task.
 
 **Goal:** [One sentence describing what this builds]
+
+**Source Design Doc:** [path/to/design-doc.md or "None - requirements provided directly"]
 
 **Architecture:** [2-3 sentences about approach]
 
@@ -96,9 +135,11 @@ git commit -m "feat: add specific feature"
 
 ## Execution Handoff
 
+**In interactive mode:**
+
 After saving the plan, offer execution choice:
 
-**"Plan complete and saved to `docs/plans/<filename>.md`. Two execution options:**
+**"Plan complete and saved to `~/.claude/plans/<project-dir-name>/<filename>.md`. Two execution options:**
 
 **1. Subagent-Driven (this session)** - I dispatch fresh subagent per task, review between tasks, fast iteration
 
@@ -114,3 +155,13 @@ After saving the plan, offer execution choice:
 **If Parallel Session chosen:**
 - Guide them to open new session in worktree
 - **REQUIRED SUB-SKILL:** New session uses executing-plans
+
+---
+
+**In autonomous mode:**
+
+Skip the execution choice. Just save the plan and report completion:
+
+**"Plan complete and saved to `~/.claude/plans/<project-dir-name>/<filename>.md`."**
+
+The orchestrating skill (e.g., implement-feature) will handle execution dispatch.

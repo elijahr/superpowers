@@ -35,6 +35,49 @@ digraph when_to_use {
 - Two-stage review after each task: spec compliance first, then code quality
 - Faster iteration (no human-in-loop between tasks)
 
+---
+
+## Autonomous Mode Behavior
+
+Check your context for autonomous mode indicators:
+- "Mode: AUTONOMOUS" or "autonomous mode"
+- Explicit instruction to proceed without asking
+
+When autonomous mode is active:
+
+### Skip These Interactions
+- Waiting for user response after each task (continue to next)
+- Final completion confirmation (proceed to finishing-a-development-branch)
+
+### Make These Decisions Autonomously
+- Subagent questions: If question is about implementation details, make reasonable choice and document it
+- Review feedback: Apply fixes automatically, re-review without asking
+
+### Circuit Breakers (Still Pause For)
+- Subagent questions about SCOPE or REQUIREMENTS (affects what gets built)
+- Repeated review failures (3+ cycles on same issue)
+- Tests failing after fix attempts
+
+When subagent asks a question in autonomous mode, use AskUserQuestion only if the question affects scope:
+
+```javascript
+// Scope question - MUST ask user even in autonomous mode
+AskUserQuestion({
+  questions: [{
+    question: "Implementer asks: 'Should this also handle X case?' This affects scope.",
+    header: "Scope",
+    options: [
+      { label: "Yes, include X", description: "Expand scope to handle this case" },
+      { label: "No, exclude X (Recommended)", description: "Keep scope minimal per YAGNI" },
+      { label: "Defer to future task", description: "Note for later, proceed without" }
+    ],
+    multiSelect: false
+  }]
+})
+```
+
+---
+
 ## The Process
 
 ```dot
@@ -93,7 +136,7 @@ digraph process {
 ```
 You: I'm using Subagent-Driven Development to execute this plan.
 
-[Read plan file once: docs/plans/feature-plan.md]
+[Read plan file once: ~/.claude/plans/<project-dir-name>/feature-plan.md]
 [Extract all 5 tasks with full text and context]
 [Create TodoWrite with all tasks]
 
