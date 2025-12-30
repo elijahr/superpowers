@@ -43,7 +43,7 @@ When skills reference tools you don't have, substitute OpenCode equivalents:
 **Skills naming (priority order):**
 - Project skills: \`project:skill-name\` (in .opencode/skills/)
 - Personal skills: \`skill-name\` (in ~/.config/opencode/skills/)
-- Superpowers skills: \`superpowers:skill-name\`
+- Superpowers skills: \`skill-name\`
 - Project skills override personal, which override superpowers when names match`;
 
     return `<EXTREMELY_IMPORTANT>
@@ -81,7 +81,7 @@ ${toolMapping}
       use_skill: tool({
         description: 'Load and read a specific skill to guide your work. Skills contain proven workflows, mandatory processes, and expert techniques.',
         args: {
-          skill_name: tool.schema.string().describe('Name of the skill to load (e.g., "superpowers:brainstorming", "my-custom-skill", or "project:my-skill")')
+          skill_name: tool.schema.string().describe('Name of the skill to load (e.g., "brainstorming", "my-custom-skill", or "project:my-skill")')
         },
         execute: async (args, context) => {
           const { skill_name } = args;
@@ -191,8 +191,8 @@ ${toolMapping}
       // Extract sessionID from various event structures
       const getSessionID = () => {
         return event.properties?.info?.id ||
-               event.properties?.sessionID ||
-               event.session?.id;
+          event.properties?.sessionID ||
+          event.session?.id;
       };
 
       // Inject bootstrap at session creation (before first user message)

@@ -45,7 +45,7 @@ use find_skills tool
 Use the `use_skill` tool to load a specific skill:
 
 ```
-use use_skill tool with skill_name: "superpowers:brainstorming"
+use use_skill tool with skill_name: "brainstorming"
 ```
 
 ### Personal Skills
@@ -98,7 +98,7 @@ description: Use when [condition] - [what it does]
 **Skill Naming:**
 - `project:skill-name` - Force project skill lookup
 - `skill-name` - Searches project → personal → superpowers
-- `superpowers:skill-name` - Force superpowers skill lookup
+- `skill-name` - Force superpowers skill lookup
 
 ## Updating
 

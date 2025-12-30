@@ -62,7 +62,7 @@ function runFindSkills() {
     console.log('  superpowers-codex use-skill <skill-name>   # Load a specific skill');
     console.log('');
     console.log('Skill naming:');
-    console.log('  Superpowers skills: superpowers:skill-name (from ~/.codex/superpowers/skills/)');
+    console.log('  Superpowers skills: skill-name (from ~/.codex/superpowers/skills/)');
     console.log('  Personal skills: skill-name (from ~/.codex/skills/)');
     console.log('  Personal skills override superpowers skills when names match.');
     console.log('');
@@ -110,9 +110,9 @@ function runBootstrap() {
     console.log('');
 
     // Load the using-superpowers skill automatically
-    console.log('## Auto-loading superpowers:using-superpowers skill:');
+    console.log('## Auto-loading using-superpowers skill:');
     console.log('');
-    runUseSkill('superpowers:using-superpowers');
+    runUseSkill('using-superpowers');
 
     console.log('');
     console.log('---');
@@ -127,7 +127,7 @@ function runUseSkill(skillName) {
     if (!skillName) {
         console.log('Usage: superpowers-codex use-skill <skill-name>');
         console.log('Examples:');
-        console.log('  superpowers-codex use-skill superpowers:brainstorming  # Load superpowers skill');
+        console.log('  superpowers-codex use-skill brainstorming  # Load superpowers skill');
         console.log('  superpowers-codex use-skill brainstorming              # Load personal skill (or superpowers if not found)');
         console.log('  superpowers-codex use-skill my-custom-skill            # Load personal skill');
         return;
@@ -221,7 +221,7 @@ function runUseSkill(skillName) {
 
     // Display skill header with clean info
     const displayName = forceSuperpowers ? `superpowers:${actualSkillPath}` :
-                       (skillFile.includes(personalSkillsDir) ? actualSkillPath : `superpowers:${actualSkillPath}`);
+        (skillFile.includes(personalSkillsDir) ? actualSkillPath : `superpowers:${actualSkillPath}`);
 
     const skillDirectory = path.dirname(skillFile);
 
@@ -261,7 +261,7 @@ switch (command) {
         console.log('');
         console.log('Examples:');
         console.log('  superpowers-codex bootstrap');
-        console.log('  superpowers-codex use-skill superpowers:brainstorming');
+        console.log('  superpowers-codex use-skill brainstorming');
         console.log('  superpowers-codex use-skill my-custom-skill');
         break;
 }

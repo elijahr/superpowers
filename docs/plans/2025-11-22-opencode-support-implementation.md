@@ -1,6 +1,6 @@
 # OpenCode Support Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
+> **For Claude:** REQUIRED SUB-SKILL: Use executing-plans to implement this plan task-by-task.
 
 **Goal:** Add full superpowers support for OpenCode.ai with a native JavaScript plugin that shares core functionality with the existing Codex implementation.
 
@@ -191,7 +191,7 @@ Add before `module.exports`:
  * Resolve a skill name to its file path, handling shadowing
  * (personal skills override superpowers skills).
  *
- * @param {string} skillName - Name like "superpowers:brainstorming" or "my-skill"
+ * @param {string} skillName - Name like "brainstorming" or "my-skill"
  * @param {string} superpowersDir - Path to superpowers skills directory
  * @param {string} personalDir - Path to personal skills directory
  * @returns {{skillFile: string, sourceType: string, skillPath: string} | null}
@@ -516,7 +516,7 @@ export const SuperpowersPlugin = async ({ project, client, $, directory, worktre
         name: 'use_skill',
         description: 'Load and read a specific skill to guide your work. Skills contain proven workflows, mandatory processes, and expert techniques.',
         schema: z.object({
-          skill_name: z.string().describe('Name of the skill to load (e.g., "superpowers:brainstorming" or "my-custom-skill")')
+          skill_name: z.string().describe('Name of the skill to load (e.g., "brainstorming" or "my-custom-skill")')
         }),
         execute: async ({ skill_name }) => {
           // Resolve skill path (handles shadowing: personal > superpowers)
@@ -712,7 +712,7 @@ When skills reference tools you don't have, substitute OpenCode equivalents:
 - Utilities and helpers specific to that skill
 
 **Skills naming:**
-- Superpowers skills: \`superpowers:skill-name\` (from ~/.config/opencode/superpowers/skills/)
+- Superpowers skills: \`skill-name\` (from ~/.config/opencode/superpowers/skills/)
 - Personal skills: \`skill-name\` (from ~/.config/opencode/skills/)
 - Personal skills override superpowers skills when names match
 `;
@@ -731,7 +731,7 @@ When skills reference tools you don't have, substitute OpenCode equivalents:
         context: `<EXTREMELY_IMPORTANT>
 You have superpowers.
 
-**Below is the full content of your 'superpowers:using-superpowers' skill - your introduction to using skills. For all other skills, use the 'use_skill' tool:**
+**Below is the full content of your 'using-superpowers' skill - your introduction to using skills. For all other skills, use the 'use_skill' tool:**
 
 ${usingSuperpowersContent}
 
@@ -821,7 +821,7 @@ use find_skills tool
 Use the `use_skill` tool to load a specific skill:
 
 ```
-use use_skill tool with skill_name: "superpowers:brainstorming"
+use use_skill tool with skill_name: "brainstorming"
 ```
 
 ### Personal Skills
@@ -991,7 +991,7 @@ Expected: Shows list of skills with names and descriptions
 
 **Step 2: Test use-skill command**
 
-Run: `.codex/superpowers-codex use-skill superpowers:brainstorming | head -20`
+Run: `.codex/superpowers-codex use-skill brainstorming | head -20`
 Expected: Shows brainstorming skill content
 
 **Step 3: Test bootstrap command**

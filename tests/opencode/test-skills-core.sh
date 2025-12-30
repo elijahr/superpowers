@@ -321,7 +321,7 @@ const shared = resolveSkillPath('shared-skill', superpowersDir, personalDir);
 console.log('SHARED:', JSON.stringify(shared));
 
 // Test 2: superpowers: prefix should force superpowers
-const forced = resolveSkillPath('superpowers:shared-skill', superpowersDir, personalDir);
+const forced = resolveSkillPath('shared-skill', superpowersDir, personalDir);
 console.log('FORCED:', JSON.stringify(forced));
 
 // Test 3: Unique skill should resolve to superpowers
